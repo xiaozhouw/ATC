@@ -31,10 +31,23 @@ Based one the input medication string, output generating process varies. Three s
 
 ***
 ## EXAMPLES
-1. Medication exists in the table already.
+1. An already existed medication
 ```{r}
 test_med = "fentanyl (pf) 50 mcg/ml injection solution"
 test_tier = 4
 findClass(test_med,test_tier)
 ```
 
+2. A new medication but its drug is in the record
+```{r}
+test_med = "fentanyl (pf) 500 mcg/ml injection solution"
+test_tier = 4
+findClass(test_med,test_tier)
+```
+
+3. A new medication with 2 drugs (both drugs are in the record)
+```{r}
+test_med = "fentanyl-acetaminophen 50mg"
+test_tier = 4
+findClass(test_med,test_tier)
+```
