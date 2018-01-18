@@ -1,0 +1,28 @@
+---
+title: "Introduction to ATC"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction_to_ATC}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+The ATC package provide a function `findClass()` to help users find the corresponding ATC of one medication.
+
+*** 
+### FUNCTION PROCEDURES
+Based one the input medication string, output generating process varies. Three situations can be considered here. 
+
+1. Medication exists in the table already.
+
+2. Medication does not exist in the table but its corresponding drugs do.For instance, different doses.
+
+3. Neither medication nor its corresponding drugs are in the tables
+    * If medication only contains one drug.
+    
+    * If medication contains more than one (which is usually two) drugs.
+
+
+***
+## EXAMPLES
+

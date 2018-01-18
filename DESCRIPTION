@@ -8,3 +8,5 @@ Description: Given a medication and the tier interested in, the ATC of all the d
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
