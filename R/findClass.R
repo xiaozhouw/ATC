@@ -8,9 +8,9 @@
 findClass = function(medname,tier=4){
   medname = tolower(medname)
   tiername = paste0("TIER",tier)
-  map_name = paste0("map_by_drug_", tier,".csv")
+  map_name = paste0("../data/map_by_drug_", tier,".csv")
   data_get_map = read.csv(file = map_name,stringsAsFactors = FALSE)
-  data_get_drug = read.csv("drug_in_med.csv",stringsAsFactors = FALSE)
+  data_get_drug = read.csv("../data/drug_in_med.csv",stringsAsFactors = FALSE)
   res_med_to_drug = data_get_drug[which(data_get_drug$MEDNAME == medname),]
   res_drug_to_class = data_get_map[which(data_get_map$DRUG == res_med_to_drug$DRUG),]
   if(nrow(res_med_to_drug) >0)

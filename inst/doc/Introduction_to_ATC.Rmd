@@ -6,6 +6,12 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
+```{r}
+knitr::opts_chunk$set(collapse = T, comment = "#>")
+options(tibble.print_min = 4L, tibble.print_max = 4L)
+library("devtools")
+install_github('xiaozhouw/ATC')
+```
 
 The ATC package provide a function `findClass()` to help users find the corresponding ATC of one medication.
 
@@ -25,4 +31,10 @@ Based one the input medication string, output generating process varies. Three s
 
 ***
 ## EXAMPLES
+1. Medication exists in the table already.
+```{r}
+test_med = "fentanyl (pf) 50 mcg/ml injection solution"
+test_tier = 4
+findClass(test_med,test_tier)
+```
 
