@@ -8,8 +8,9 @@
 findClass = function(medname,tier=4){
   medname = tolower(medname)
   tiername = paste0("TIER",tier)
-  all_tiers = list(data_drug_1,data_drug_2,data_drug_3,data_drug_4)
-  data_get_map = all_tiers[[tier]]
+  data_get_drug = load(file = "/data/data_get_drug.rda")
+  mapname = paste0("/data/data_drug_",tier,".rda")
+  data_get_map = load(file = mapname)
   res_med_to_drug = data_get_drug[which(data_get_drug$MEDNAME == medname),]
   res_drug_to_class = data_get_map[which(data_get_map$DRUG == res_med_to_drug$DRUG),]
   if(nrow(res_med_to_drug) >0)
