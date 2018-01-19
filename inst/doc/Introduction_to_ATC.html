@@ -16,6 +16,44 @@
 
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 
 
@@ -32,24 +70,84 @@
 
 
 
-<p>The ATC package provide a function <code>findClass()</code> to help users find the corresponding ATC of one medication.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">collapse =</span> T, <span class="dt">comment =</span> <span class="st">&quot;#&gt;&quot;</span>)
+<span class="kw">options</span>(<span class="dt">tibble.print_min =</span> 4L, <span class="dt">tibble.print_max =</span> 4L)
+<span class="kw">library</span>(<span class="st">&quot;devtools&quot;</span>)
+<span class="kw">library</span>(repmis)
+<span class="kw">library</span>(dplyr)
+<span class="kw">install_github</span>(<span class="st">'xiaozhouw/ATC'</span>)</code></pre></div>
+<p>The ATC package provides a function <code>findClass()</code> to help users find the corresponding ATC of one medication. Two lists will be returned. The first list contains a table that lists all the drugs that contained in the medication. The second list contains one table for each drug and its corresponding classes under the selected tier.</p>
 <hr />
 <div id="function-procedures" class="section level3">
 <h3>FUNCTION PROCEDURES</h3>
 <p>Based one the input medication string, output generating process varies. Three situations can be considered here.</p>
 <ol style="list-style-type: decimal">
-<li><p>Medication exists in the table already.</p></li>
-<li><p>Medication does not exist in the table but its corresponding drugs do.For instance, different doses.</p></li>
-<li>Neither medication nor its corresponding drugs are in the tables
+<li>Medication exists in the record already.
 <ul>
-<li><p>If medication only contains one drug.</p></li>
-<li><p>If medication contains more than one (which is usually two) drugs.</p></li>
+<li>Two tables can be generated only using the existed data, no need to use API.</li>
+</ul></li>
+<li>Medication does not exist in the table, but its corresponding drugs do. For instance, different doses.
+<ul>
+<li>Two tables can also be generated only using the existed data since we only focus on the drug component.</li>
+</ul></li>
+<li>Neither medication nor its corresponding drugs are in the tables. Regular expression is used to extract the drug component(s) in the medication, and the first table is being built accordingly.
+<ul>
+<li><p>If medication only contains one drug: the second list only contains one table that illustrates the classes of the drug.</p></li>
+<li><p>If medication contains more than one (which is usually two) drugs: the second list will contain multiple tables.</p></li>
 </ul></li>
 </ol>
 <hr />
 </div>
-<div id="examples" class="section level2">
-<h2>EXAMPLES</h2>
+<div id="examples" class="section level3">
+<h3>EXAMPLES</h3>
+<ol style="list-style-type: decimal">
+<li>An already existed medication</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_med =<span class="st"> &quot;fentanyl (pf) 50 mcg/ml injection solution&quot;</span>
+test_tier =<span class="st"> </span><span class="dv">4</span>
+<span class="kw">findClass</span>(test_med,test_tier)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt;                                      MEDNAME     DRUG</span>
+<span class="co">#&gt; 1 fentanyl (pf) 50 mcg/ml injection solution fentanyl</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt;          DRUG                        TIER4</span>
+<span class="co">#&gt; 1174 fentanyl           opioid anesthetics</span>
+<span class="co">#&gt; 1175 fentanyl phenylpiperidine derivatives</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>A new medication but its drug is in the record</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_med =<span class="st"> &quot;fentanyl (pf) 500 mcg/ml injection solution&quot;</span>
+test_tier =<span class="st"> </span><span class="dv">4</span>
+<span class="kw">findClass</span>(test_med,test_tier)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt;                                       MEDNAME     DRUG</span>
+<span class="co">#&gt; 1 fentanyl (pf) 500 mcg/ml injection solution fentanyl</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt;          DRUG                        TIER4</span>
+<span class="co">#&gt; 1174 fentanyl           opioid anesthetics</span>
+<span class="co">#&gt; 1175 fentanyl phenylpiperidine derivatives</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>A new medication with 2 drugs (both drugs are in the record)</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_med =<span class="st"> &quot;fentanyl-acetaminophen 50mg&quot;</span>
+test_tier =<span class="st"> </span><span class="dv">4</span>
+<span class="kw">findClass</span>(test_med,test_tier)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt;                       MEDNAME          DRUG</span>
+<span class="co">#&gt; 1 fentanyl-acetaminophen 50mg      fentanyl</span>
+<span class="co">#&gt; 2 fentanyl-acetaminophen 50mg acetaminophen</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [[2]][[1]]</span>
+<span class="co">#&gt;          DRUG                        TIER4</span>
+<span class="co">#&gt; 1174 fentanyl           opioid anesthetics</span>
+<span class="co">#&gt; 1175 fentanyl phenylpiperidine derivatives</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]][[2]]</span>
+<span class="co">#&gt;             DRUG    TIER4</span>
+<span class="co">#&gt; 27 acetaminophen anilides</span></code></pre></div>
 </div>
 
 

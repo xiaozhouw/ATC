@@ -6,7 +6,7 @@ Date: 2018-01-18
 Authors: Xiaozhou Wang <xiaozhou.wang@duke.edu>
 Description: Given a medication and the tier interested in, the ATC of all the drugs in that medication will be returned. 
 License: GPL-2
-LazyData: FALSE
+LazyData: TRUE
 RoxygenNote: 6.0.1
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
