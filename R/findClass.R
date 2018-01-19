@@ -8,9 +8,9 @@
 findClass = function(medname,tier=4){
   medname = tolower(medname)
   tiername = paste0("TIER",tier)
-  source_data("https://github.com/xiaozhouw/ATC/raw/master/data/data_get_drug.rda")
+  source_data("https://github.com/xiaozhouw/ATC/raw/master/data/data_get_drug.rda",cache = TRUE)
   mapname = paste0("https://github.com/xiaozhouw/ATC/raw/master/data/data_drug_",tier,".rda")
-  source_data(mapname)
+  data_get_drug = get(source_data(mapname,cache = TRUE))
   res_med_to_drug = data_get_drug[which(data_get_drug$MEDNAME == medname),]
   res_drug_to_class = data_get_map[which(data_get_map$DRUG == res_med_to_drug$DRUG),]
   if(nrow(res_med_to_drug) >0)
